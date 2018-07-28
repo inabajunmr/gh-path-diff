@@ -16,6 +16,7 @@
       "matches": [
         "https://github.com/*/*/pull/*/files"
       ],
+      "run_at": "document_end",
       "js": [
         "scripts/main.js",
         "scripts/lib/diff.js"
