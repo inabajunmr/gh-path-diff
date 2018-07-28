@@ -25,21 +25,52 @@ gh_diff.main = function() {
         let after = groups[2];
         let diff = JsDiff.diffChars(after, before);
 
-        let diffNode = document.createDocumentFragment();
+        let diffBeforeNode = document.createDocumentFragment();
+        let diffAfterNode = document.createDocumentFragment();
+
         diff.forEach(function(part){
-            let node = document.createElement('span');
-            node.appendChild(document.createTextNode(part.value));    
+            let afterNode = document.createElement('span');
+            let beforeNode = document.createElement('span');
             if(part.added){
-                node.style.cssText = "background-color: #acf2bd;"; 
+                afterNode.style.cssText = "background-color: #acf2bd;"; 
+                afterNode.appendChild(document.createTextNode(part.value));
+                diffAfterNode.appendChild(afterNode);
             }else if(part.removed){
-                node.style.cssText = "background-color: #fdb8c0;"; 
+                beforeNode.style.cssText = "background-color: #fdb8c0;"; 
+                beforeNode.appendChild(document.createTextNode(part.value));
+                diffBeforeNode.appendChild(beforeNode);
+            }else{
+                beforeNode.appendChild(document.createTextNode(part.value));
+                afterNode.appendChild(document.createTextNode(part.value));
+
+                diffBeforeNode.appendChild(beforeNode);
+                diffAfterNode.appendChild(afterNode);
             }
-            diffNode.appendChild(node);
           });
 
-          target.removeChild(target.firstChild);
-          target.appendChild(diffNode);
+
+          target.innerHTML = "";
+
+          target.appendChild(diffBeforeNode);
+          target.appendChild(document.createTextNode(" → "));
+          target.appendChild(diffAfterNode);
     });
 }
 
-gh_diff.main()
+gh_diff.observe = function(){
+    // Files are lazy fetched so invoke main by each loading.
+    var observer = new MutationObserver(records => {
+        gh_diff.main()
+    });
+
+    var options = {
+        childList: true
+    };
+    
+    Array.prototype.forEach.call(document.getElementsByClassName("js-diff-progressive-container"), target => {
+        observer.observe(target, options);
+    });
+}
+
+gh_diff.observe();
+gh_diff.main();
