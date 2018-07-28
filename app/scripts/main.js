@@ -32,13 +32,15 @@ gh_diff.main = function() {
             let afterNode = document.createElement('span');
             let beforeNode = document.createElement('span');
             if(part.added){
-                afterNode.style.cssText = "background-color: #acf2bd;"; 
-                afterNode.appendChild(document.createTextNode(part.value));
-                diffAfterNode.appendChild(afterNode);
-            }else if(part.removed){
                 beforeNode.style.cssText = "background-color: #fdb8c0;"; 
                 beforeNode.appendChild(document.createTextNode(part.value));
                 diffBeforeNode.appendChild(beforeNode);
+
+            }else if(part.removed){
+                afterNode.style.cssText = "background-color: #acf2bd;";
+                afterNode.appendChild(document.createTextNode(part.value));
+                diffAfterNode.appendChild(afterNode);
+
             }else{
                 beforeNode.appendChild(document.createTextNode(part.value));
                 afterNode.appendChild(document.createTextNode(part.value));
