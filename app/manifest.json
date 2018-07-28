@@ -18,7 +18,7 @@
       ],
       "js": [
         "scripts/main.js",
-        "scripts/lib/diff.js
+        "scripts/lib/diff.js"
       ]
     }
   ]
