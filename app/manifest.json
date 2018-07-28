@@ -18,8 +18,8 @@
       ],
       "run_at": "document_end",
       "js": [
-        "scripts/main.js",
-        "scripts/lib/diff.js"
+        "scripts/lib/diff.js",
+        "scripts/main.js"
       ]
     }
   ]
