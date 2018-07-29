@@ -6,10 +6,12 @@ gh_diff.get_targets = function(){
     return document.querySelectorAll(".file-info > a");
 }
 
-gh_diff.main = function() {
-    
+gh_diff.show_diff = function() {
     // correct filepath diff elements(a tag)
     let targets = gh_diff.get_targets();
+    if(targets == null){
+        return;
+    }
 
     Array.prototype.forEach.call(targets, target => {
 
@@ -59,20 +61,44 @@ gh_diff.main = function() {
     });
 }
 
-gh_diff.observe = function(){
-    // Files are lazy fetched so invoke main by each loading.
-    var observer = new MutationObserver(records => {
-        gh_diff.main()
-    });
+gh_diff.hook_files_changes_link = function(){
+    // hook only no files window. (Not only directly access to Files changes.)
+    if(document.querySelector("#files") != null){
+        return;
+    }
 
-    var options = {
-        childList: true
-    };
-    
-    Array.prototype.forEach.call(document.getElementsByClassName("js-diff-progressive-container"), target => {
-        observer.observe(target, options);
+    // not load contents as soon as click so observe tab and polling to show diff contents.
+    let observer = new MutationObserver(records => {
+        var id = setInterval(function(){
+            if(document.querySelector("#files") == null){
+                return;
+            }
+            gh_diff.show_diff();
+            gh_diff.observe();
+
+            if(document.querySelector("#files") != null){
+                clearInterval(id);
+            }    
+        }, 200);
     });
+    observer.observe(document.querySelector(".tabnav.tabnav-pr .tabnav-tabs"), {childList: true});   
 }
 
-gh_diff.observe();
+gh_diff.observe = function(){
+    // Files are lazy fetched so invoke show_diff by each loading.
+    let observer = new MutationObserver(records => {
+        gh_diff.show_diff()
+    });
+
+    Array.prototype.forEach.call(document.getElementsByClassName("js-diff-progressive-container"), target => {
+        observer.observe(target, {childList: true});
+    });     
+}
+
+gh_diff.main = function(){
+    gh_diff.hook_files_changes_link();
+    gh_diff.observe();
+    gh_diff.show_diff();    
+}
+
 gh_diff.main();

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "gh-path-diff",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Path diff for github file diff page.",
   "permissions": [
     "https://github.com/*"
@@ -14,7 +14,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://github.com/*/*/pull/*/files"
+        "https://github.com/*/*/pull/*/files",
+        "https://github.com/*/*/pull/*"
       ],
       "run_at": "document_end",
       "js": [
