@@ -67,6 +67,10 @@ gh_diff.hook_files_changes_link = function(){
         return;
     }
 
+    if(document.querySelector(".tabnav.tabnav-pr .tabnav-tabs") == null){
+        return;
+    }
+
     // not load contents as soon as click so observe tab and polling to show diff contents.
     let observer = new MutationObserver(records => {
         var id = setInterval(function(){
@@ -102,3 +106,11 @@ gh_diff.main = function(){
 }
 
 gh_diff.main();
+
+// GitHub has async compile dom so kick script by ajax http access via background
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+    if("gh-path-diff" === message){
+        gh_diff.main();
+    }
+    return;
+});
