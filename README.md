@@ -10,3 +10,9 @@ Chrome extension for GitHub diff page to be visible diff of file path.
 # After
 
 <img width="1008" alt="2018-07-28 22 39 50" src="https://user-images.githubusercontent.com/10000393/43357761-76c6e8aa-92c1-11e8-8173-6b35e757b050.png">
+
+# Development
+
+## Formatter
+
+Code format by [pretty-quick](https://github.com/azz/pretty-quick)
