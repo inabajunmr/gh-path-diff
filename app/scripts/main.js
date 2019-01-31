@@ -69,7 +69,7 @@ gh_diff.hook_files_changes_link = function() {
 
   // not load contents as soon as click so observe tab and polling to show diff contents.
   let observer = new MutationObserver(records => {
-    var id = setInterval(function() {
+    let id = setInterval(function() {
       if (document.querySelector("#files") == null) {
         return;
       }
